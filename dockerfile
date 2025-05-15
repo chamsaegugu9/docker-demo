@@ -1,0 +1,20 @@
+# 1. 베이스 이미지 선택
+FROM python:3.9-slim
+
+# 2. 작업 디렉토리 설정
+WORKDIR /app
+
+# 3. 의존성 파일 복사
+COPY requirements.txt .
+
+# 4. 의존성 설치
+RUN pip install -r requirements.txt
+
+# 5. 앱 파일 복사
+COPY . .
+
+# 6. 환경 변수 설정 (선택적)
+ENV FLASK_APP=app.py
+
+# 7. 웹 애플리케이션 실행 명령
+CMD ["flask", "run", "--host=0.0.0.0"]

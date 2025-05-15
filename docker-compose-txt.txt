@@ -1,0 +1,319 @@
+services:
+  ubuntu_service:
+    image: ubuntu:latest
+    container_name: my_ubuntu_container
+    command: bash
+    stdin_open: true     # 상호작용 모드를 활성화
+    tty: true            # 가상 터미널을 할당
+    volumes:
+      - ./ubuntu_volume:/host_data
+      - my_volume:/volume
+    networks:
+      - my_network
+    environment:
+      - MY_ENV_VAR=value
+    restart: no
+
+volumes:
+  my_volume:
+
+networks:
+  my_network:
+    driver: bridge
+
+
+
+
+설명: docker-compose.yml 파일에 정의된 서비스를 실행합니다. 없으면 이미지를 빌드하고, 네트워크를 설정한 후, 컨테이너들을 시작합니다.
+사용법:
+docker-compose up
+옵션:
+-d (detached): 백그라운드에서 실행합니다.
+--build: 이미지를 강제로 빌드합니다.
+--no-deps: 의존성을 무시하고, 해당 서비스만 실행합니다.
+
+설명: docker-compose up으로 실행한 서비스를 중지하고, 네트워크, 볼륨 등을 삭제합니다.
+사용법:
+docker-compose down
+옵션:
+--volumes: 생성된 볼륨도 삭제합니다.
+--rmi all: 생성된 이미지를 모두 삭제합니다.
+--remove-orphans: 연결되지 않은 서비스들도 삭제합니다.
+
+설명: 현재 실행 중인 컨테이너들의 상태를 확인합니다.
+사용법:
+docker-compose ps
+
+설명: docker-compose.yml 파일에 정의된 서비스의 이미지를 빌드합니다. docker-compose up 전에 수동으로 빌드를 해야 할 때 사용합니다.
+사용법:
+docker-compose build
+옵션:
+--no-cache: 캐시를 사용하지 않고 이미지를 빌드합니다.
+--parallel: 여러 이미지를 동시에 빌드합니다.
+
+설명: 실행 중인 컨테이너들의 로그를 출력합니다.
+사용법:
+docker-compose logs
+옵션:
+-f (follow): 실시간으로 로그를 모니터링합니다.
+--tail: 출력할 로그의 끝에서부터 출력할 라인 수를 지정합니다.
+
+설명: 실행 중인 컨테이너에 명령어를 실행합니다. 일반적으로 쉘을 실행할 때 사용됩니다.
+사용법:
+docker-compose exec <서비스명> <명령어>
+예:
+docker-compose exec web bash
+
+설명: 새 컨테이너를 시작하고, 그 안에서 명령어를 실행합니다. exec와 유사하지만, 컨테이너가 일시적으로 생성됩니다.
+사용법:
+docker-compose run <서비스명> <명령어>
+
+설명: 실행 중인 서비스들을 중지합니다. docker-compose down과 달리 컨테이너는 삭제되지 않습니다.
+사용법:
+docker-compose stop
+
+설명: 중지된 서비스를 시작합니다.
+사용법:
+docker-compose start
+
+설명: 실행 중인 서비스를 재시작합니다.
+사용법:
+docker-compose restart
+
+설명: docker-compose의 버전 정보를 출력합니다.
+사용법:
+docker-compose version
+
+설명: docker-compose.yml 파일을 파싱하여 구성 내용을 출력합니다. 오류가 있을 경우 그 부분도 알려줍니다.
+사용법:
+docker-compose config
+
+설명: docker-compose.yml에 정의된 서비스의 이미지를 다운로드합니다.
+사용법:
+docker-compose pull
+
+설명: docker-compose.yml에 정의된 서비스의 이미지를 레지스트리에 푸시합니다.
+사용법:
+docker-compose push
+
+설명: 서비스의 인스턴스 수를 조절합니다. (docker-compose v2부터는 scale 명령어가 더 이상 사용되지 않고, 대신 replicas 옵션을 사용합니다.)
+사용법:
+docker-compose scale <서비스명>=<인스턴스 수>
+
+설명: docker-compose로 실행 중인 서비스의 프로세스 정보를 확인합니다.
+사용법:
+docker-compose top
+
+
+
+#####################################################################
+
+
+설명: docker-compose.yml 파일에서 사용할 Compose 파일의 버전을 지정합니다. 최신 버전에서는 3 또는 3.x를 사용합니다.
+version
+예시:
+version: '3'
+
+
+설명: 실행할 여러 컨테이너를 정의하는 섹션입니다. 각 서비스는 하나의 컨테이너를 나타냅니다.
+services
+예시:
+services:
+  web:
+    image: nginx
+  db:
+    image: postgres
+
+
+설명: 이미지를 빌드할 때 필요한 설정을 정의합니다. build는 도커 이미지가 Dockerfile을 통해 빌드되도록 합니다.
+build
+옵션:
+context: 빌드할 디렉토리의 경로를 지정합니다.
+dockerfile: 사용할 Dockerfile의 이름을 지정합니다.
+args: 빌드 시 사용할 빌드 인자들을 정의합니다.
+예시:
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+
+
+설명: 사용할 도커 이미지를 지정합니다. 이미지 이름과 태그를 지정할 수 있습니다.
+image
+예시:
+services:
+  web:
+    image: nginx:latest
+
+
+설명: 컨테이너의 이름을 지정합니다. 이 옵션을 사용하면 컨테이너의 이름을 docker ps로 쉽게 식별할 수 있습니다.
+container_name
+예시:
+services:
+  web:
+    image: nginx
+    container_name: my_nginx_container
+
+
+설명: 호스트와 컨테이너의 포트를 매핑합니다.
+ports
+옵션:
+hostPort:containerPort: 호스트와 컨테이너의 포트를 매핑합니다.
+hostIP:hostPort:containerPort: 특정 IP에 바인딩된 포트 매핑을 설정합니다.
+예시:
+services:
+  web:
+    image: nginx
+    ports:
+      - "8080:80"
+
+
+설명: 호스트와 컨테이너 간의 파일 시스템을 공유합니다.
+volumes
+옵션:
+hostPath:containerPath: 호스트의 경로와 컨테이너의 경로를 매핑합니다.
+namedVolume:containerPath: 명명된 볼륨을 컨테이너와 연결합니다.
+volumeName:containerPath:ro: 읽기 전용으로 볼륨을 연결합니다.
+예시:
+services:
+  web:
+    image: nginx
+    volumes:
+      - ./data:/data
+      - my_volume:/mnt/data
+volumes:
+  my_volume:
+
+
+설명: 컨테이너 내에서 사용할 환경 변수를 설정합니다.
+environment
+옵션:
+KEY=VALUE: 환경 변수 이름과 값을 정의합니다.
+env_file: 환경 변수 파일을 지정하여 로드합니다.
+예시:
+services:
+  web:
+    image: nginx
+    environment:
+      - ENV_VAR1=value1
+      - ENV_VAR2=value2
+
+
+설명: 여러 서비스 간의 네트워크 설정을 정의합니다. 기본적으로 각 서비스는 bridge 네트워크를 사용하지만, 다른 네트워크를 정의할 수 있습니다.
+networks
+옵션:
+name: 네트워크의 이름을 정의합니다.
+driver: 사용할 네트워크 드라이버를 지정합니다.
+예시:
+networks:
+  my_network:
+    driver: bridge
+services:
+  app:
+    image: app_image
+    networks:
+      - my_network
+
+
+설명: 특정 서비스가 다른 서비스가 준비될 때까지 기다리도록 설정합니다. (컨테이너의 시작 순서를 정의합니다.)
+depends_on
+예시:
+services:
+  app:
+    image: app_image
+    depends_on:
+      - db
+  db:
+    image: postgres
+
+
+설명: 컨테이너가 종료되었을 때 자동으로 재시작할지 여부를 설정합니다.
+restart
+옵션:
+no: 자동 재시작 없음 (기본값).
+always: 항상 재시작.
+on-failure: 실패 시 재시작.
+unless-stopped: 중지되지 않는 한 재시작.
+예시:
+services:
+  web:
+    image: nginx
+    restart: always
+
+
+설명: 컨테이너가 사용할 수 있는 CPU와 메모리의 제한을 설정합니다.
+cpu_limit, mem_limit
+옵션:
+cpu_limit: 사용할 CPU의 비율을 설정합니다.
+mem_limit: 메모리 제한을 설정합니다.
+예시:
+services:
+  app:
+    image: app_image
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+
+설명: Swarm 모드에서 서비스를 배포할 때 사용됩니다. replicas, resources, placement 등을 설정할 수 있습니다.
+deploy
+옵션:
+replicas: 서비스의 복제본 수를 정의합니다.
+resources: 자원 제한을 설정합니다.
+예시:
+services:
+  app:
+    image: app_image
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+
+설명: 컨테이너의 상태를 주기적으로 확인하여 정상 상태인지 점검합니다.
+healthcheck
+옵션:
+test: 상태를 확인하는 명령어입니다.
+interval: 상태 점검 간격.
+timeout: 점검 명령어 타임아웃.
+retries: 점검 실패 시 재시도 횟수.
+예시:
+services:
+  web:
+    image: nginx
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      retries: 3
+
+
+설명: 컨테이너의 로그 드라이버 및 관련 옵션을 정의합니다.
+logging
+옵션:
+driver: 사용할 로그 드라이버를 지정합니다 (예: json-file, syslog).
+options: 드라이버와 관련된 추가 설정.
+예시:
+services:
+  app:
+    image: app_image
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
+설명: 컨테이너 시작 시 실행할 명령어를 정의합니다.
+command
+예시:
+services:
+  app:
+    image: app_image
+    command: ["python", "app.py"]
+
+

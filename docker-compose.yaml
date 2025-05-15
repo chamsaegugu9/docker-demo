@@ -1,0 +1,22 @@
+services:
+  ubuntu_service:
+    image: ubuntu:latest
+    container_name: my_ubuntu_container
+    command: bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./ubuntu_volume:/host_data
+      - my_volume:/volume
+    networks:
+      - my_network
+    environment:
+      - MY_ENV_VAR=value
+    restart: no
+
+volumes:
+  my_volume:
+
+networks:
+  my_network:
+    driver: bridge

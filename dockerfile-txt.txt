@@ -1,0 +1,132 @@
+# 1. 베이스 이미지 선택
+FROM python:3.9-slim
+
+# 2. 작업 디렉토리 설정
+WORKDIR /app
+
+# 3. 의존성 파일 복사
+COPY requirements.txt .
+
+# 4. 의존성 설치
+RUN pip install -r requirements.txt
+
+# 5. 앱 파일 복사
+COPY . .
+
+# 6. 환경 변수 설정 (선택적)
+ENV FLASK_APP=app.py
+
+# 7. 웹 애플리케이션 실행 명령
+CMD ["flask", "run", "--host=0.0.0.0"]
+
+
+# 1. Node.js 이미지를 기반으로
+FROM node:14
+
+# 2. 앱 디렉토리 생성
+WORKDIR /usr/src/app
+
+# 3. package.json과 package-lock.json 복사
+COPY package*.json ./
+
+# 4. 의존성 설치
+RUN npm install
+
+# 5. 앱 코드 복사
+COPY . .
+
+# 6. 애플리케이션 포트 설정
+EXPOSE 8080
+
+# 7. 앱 실행
+CMD ["node", "server.js"]
+
+
+
+FROM
+설명: Docker 이미지의 기본이 되는 이미지를 설정합니다.
+형식: FROM <이미지명>:<태그>
+예시: FROM ubuntu:20.04
+
+LABEL
+설명: 이미지에 메타데이터를 추가합니다. 주로 유지 관리자의 정보, 버전 정보 등을 추가할 때 사용합니다.
+형식: LABEL <key>=<value>
+예시: LABEL version="1.0" maintainer="user@example.com"
+
+RUN
+설명: 이미지 생성 과정 중에 명령을 실행합니다. 보통 소프트웨어 설치나 빌드를 위해 사용됩니다.
+형식: RUN <명령어>
+예시: RUN apt-get update && apt-get install -y curl
+
+CMD
+설명: 컨테이너가 시작될 때 실행될 기본 명령을 지정합니다. Dockerfile에서 여러 번 사용할 수 있지만, 마지막에 지정된 CMD만 적용됩니다.
+형식: CMD ["실행할 프로그램", "인자"] 또는 CMD ["실행할 프로그램"] 또는 CMD <실행할 프로그램> <인자>
+예시: CMD ["python3", "app.py"]
+
+ENTRYPOINT
+설명: 컨테이너가 실행될 때 기본적으로 실행할 명령을 설정합니다. ENTRYPOINT와 CMD는 함께 사용될 수 있으며, CMD는 ENTRYPOINT의 인자 역할을 할 수 있습니다.
+형식: ENTRYPOINT ["실행할 프로그램", "인자"]
+예시: ENTRYPOINT ["python3", "app.py"]
+
+EXPOSE
+설명: 컨테이너가 외부와 통신하는 포트를 정의합니다. 실제로 포트를 열지는 않지만, 문서화와 네트워크 설정에서 유용합니다.
+형식: EXPOSE <포트 번호>
+예시: EXPOSE 8080
+
+ENV
+설명: 환경 변수를 설정합니다. 설정된 환경 변수는 컨테이너 내부에서 사용할 수 있습니다.
+형식: ENV <key>=<value>
+예시: ENV PATH=/usr/local/bin:$PATH
+
+ADD
+설명: 호스트 파일 시스템에서 파일을 컨테이너 이미지로 복사합니다. 이 명령은 tar 파일을 자동으로 압축 해제하거나 URL에서 파일을 다운로드하는 기능도 포함됩니다.
+형식: ADD <소스> <목적지>
+예시: ADD myfile.tar.gz /app/
+
+COPY
+설명: 호스트 시스템의 파일이나 디렉토리를 컨테이너로 복사합니다. ADD와 유사하지만, 파일 압축 해제나 URL 다운로드 기능은 없습니다.
+형식: COPY <소스> <목적지>
+예시: COPY . /app/
+
+VOLUME
+설명: 컨테이너 내에서 데이터를 지속적으로 저장할 위치를 정의합니다. 데이터는 호스트와 공유될 수 있습니다.
+형식: VOLUME ["/path/to/data"]
+예시: VOLUME ["/data"]
+
+USER
+설명: 지정된 사용자를 컨테이너 내에서 실행할 프로그램의 실행자로 설정합니다.
+형식: USER <사용자>
+예시: USER nobody
+
+WORKDIR
+설명: 작업 디렉터리를 설정합니다. RUN, CMD, ENTRYPOINT, COPY, ADD 등의 명령은 이 디렉터리에서 실행됩니다.
+형식: WORKDIR <디렉터리 경로>
+예시: WORKDIR /app
+
+ARG
+설명: 빌드 시 사용할 수 있는 변수로, Dockerfile에서 변수를 정의하고 빌드 시 값을 설정할 수 있습니다.
+형식: ARG <변수명>=<값>
+예시: ARG VERSION=1.0
+
+SHELL
+설명: 기본 쉘을 지정합니다. RUN 명령어에서 사용하는 쉘을 변경할 수 있습니다.
+형식: SHELL ["<쉘 명령어>", "<옵션>"]
+예시: SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+STOPSIGNAL
+설명: 컨테이너가 종료될 때 사용할 종료 신호를 설정합니다.
+형식: STOPSIGNAL <신호>
+예시: STOPSIGNAL SIGTERM
+
+HEALTHCHECK
+설명: 컨테이너의 건강 상태를 체크하는 명령을 설정합니다. 일정한 시간 간격으로 상태를 확인할 수 있습니다.
+형식: HEALTHCHECK [OPTIONS] CMD <명령>
+예시: HEALTHCHECK CMD curl --fail http://localhost:8080/health || exit 1
+
+ARG (재정의)
+설명: ARG는 빌드 시 정의할 수 있는 변수입니다. --build-arg로 빌드 시 값을 전달할 수 있습니다.
+
+ONBUILD
+설명: 부모 이미지가 자식 이미지로부터 빌드될 때 실행될 명령을 설정합니다. 이는 주로 재사용 가능한 기본 이미지를 만들 때 사용됩니다.
+형식: ONBUILD <명령>
+예시: ONBUILD RUN echo "This will run when a child image is built"
