@@ -47,6 +47,24 @@
 | `idle`    | 다른 모든 작업이 끝날 때까지 대기 후 실행.               |
 
 
+append: 접두어
+StandardOutput=append:/home/ubuntu/logs/app.log
+StandardError=append:/home/ubuntu/logs/app.log
+여기서 append:는 기존 파일에 덧붙이는 모드입니다.
+append: 사용 시 → 로그가 덮어쓰이지 않고 이어서 기록됩니다.
+/home/ubuntu/logs/app.log 파일이 없으면 자동으로 생성됩니다 (권한만 충분하다면).
+
+주요 포맷
+| 옵션                    | 설명                         |
+| --------------------- | -------------------------- |
+| `journal` (기본값)       | 출력은 `journalctl` 로그에 기록됨   |
+| `null`                | 출력을 무시 (버림)                |
+| `tty`                 | 특정 TTY(터미널)로 출력            |
+| `file:/path/to/log`   | 지정한 파일에 쓰되 **매번 덮어씀** ⚠    |
+| `append:/path/to/log` | 지정한 파일에 **내용을 추가(append)** |
+
+
+
 예시:
 [Unit]
 Description=My Spring Boot App

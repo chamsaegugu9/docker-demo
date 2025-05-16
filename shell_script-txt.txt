@@ -1,0 +1,260 @@
+#!/bin/bash는 **셰뱅(shebang)**이라고 하며, 이 스크립트를 실행할 때 사용할 쉘을 지정합니다.
+
+#!/bin/bash
+echo "Hello, World!"
+date
+
+
+주석 (Comments)
+# 이것은 주석입니다. 실행되지 않습니다.
+
+변수 (Variables)
+name="ChatGPT"   # 변수 선언, = 앞뒤에 공백 없이 작성
+echo $name       # 변수 값 출력
+변수 사용 시 주의사항
+= 앞뒤에 공백이 없어야 합니다.
+변수 참조 시 $ 기호를 붙입니다.
+
+입력받기 (User Input)
+echo "이름을 입력하세요:"
+read username
+echo "안녕하세요, $username 님!"
+
+조건문 (if)
+기본 구조
+if [ 조건 ]; then
+  명령어
+elif [ 다른조건 ]; then
+  다른 명령어
+else
+  명령어
+fi
+
+예시
+num=5
+if [ $num -gt 3 ]; then
+  echo "3보다 큽니다"
+else
+  echo "3 이하입니다"
+fi
+
+조건 비교 연산자
+| 연산자   | 설명         |
+| ----- | ---------- |
+| `-eq` | 같음         |
+| `-ne` | 다름         |
+| `-gt` | 크다 (>)     |
+| `-lt` | 작다 (<)     |
+| `-ge` | 크거나 같다 (≥) |
+| `-le` | 작거나 같다 (≤) |
+
+반복문 (for / while)
+for 문
+for i in 1 2 3 4 5; do
+  echo "숫자: $i"
+done
+
+for i in $(seq 1 10); do
+  echo "반복 $i"
+done
+
+for ((i=1; i<=10; i++)); do
+  echo "반복 $i"
+done
+(( )) 구문은 산술 연산이 가능한 C 스타일 문법입니다.
+변수 앞에 $ 없이 사용하고, 반복 조건과 증감식을 직접 씁니다.
+
+while 문
+count=1
+while [ $count -le 5 ]; do
+  echo "카운트: $count"
+  count=$((count + 1))
+done
+
+함수 (Functions)
+say_hello() {
+  echo "안녕하세요!"
+}
+say_hello   # 함수 호출
+
+함수와 리턴값
+sum() {
+  result=$(( $1 + $2 ))
+  return $result
+}
+
+sum 3 4
+echo "합: $?"   # $?는 마지막 명령의 반환값
+
+함수의 return 값은 0~255 숫자만 가능
+더 복잡한 결과는 글로벌 변수나 출력을 통해 전달
+
+sum() {
+  echo $(( $1 + $2 ))
+}
+
+result=$(sum 3 4)
+echo "합: $result"
+
+
+명령어 치환 (Command Substitution)
+today=$(date)
+echo "오늘 날짜는 $today 입니다."
+$(명령어) 형태로 명령어 실행 결과를 변수에 저장합니다.
+
+스크립트 실행
+먼저 실행 권한을 부여합니다:
+chmod +x script.sh
+실행:
+./script.sh   # 현재 디렉토리에서 실행
+또는
+bash script.sh
+
+
+문자열 조작
+str="Hello Bash"
+
+echo ${#str}           # 문자열 길이
+echo ${str:0:5}        # 부분 문자열: Hello
+echo ${str/Bash/World} # 치환: Hello World
+
+문자열 처리 예시
+greeting="Hello, World"
+echo ${greeting:0:5}   # Hello
+
+
+case 문 (조건 분기 switch-case와 비슷)
+read -p "메뉴를 선택하세요 (start/stop/restart): " cmd
+case $cmd in
+  start)
+    echo "서비스 시작";;
+  stop)
+    echo "서비스 중지";;
+  restart)
+    echo "서비스 재시작";;
+  *)
+    echo "알 수 없는 명령";;
+esac
+if보다 복잡한 분기 상황에서 유리
+;;로 각 블록을 종료함
+
+파일/디렉토리 체크
+file="test.txt"
+
+if [ -f "$file" ]; then
+  echo "파일이 존재합니다"
+fi
+
+if [ -d "$file" ]; then
+  echo "디렉토리입니다"
+fi
+
+| 조건   | 설명         |
+| ---- | ---------- |
+| `-f` | 일반 파일인지 확인 |
+| `-d` | 디렉토리인지 확인  |
+| `-e` | 존재하는지 확인   |
+| `-r` | 읽기 권한 확인   |
+| `-w` | 쓰기 권한 확인   |
+| `-x` | 실행 권한 확인   |
+
+
+배열
+괄호 ()를 이용해 배열을 선언합니다.
+쉼표는 사용하지 않고, 공백으로 구분합니다.
+arr=(apple banana cherry)
+
+unset arr[1]           # 요소 삭제
+arr+=(grape)           # 요소 추가
+echo ${arr[@]}         # 전체 출력
+
+배열 요소 순회 (for 문)
+arr=(1 2 3 4 5)
+for i in "${arr[@]}"; do
+  echo "값: $i"
+done
+${arr[@]}는 배열의 모든 요소를 나타냅니다.
+꼭 "${arr[@]}"처럼 쌍따옴표를 붙여서 쓰는 것이 안전합니다 (특히 요소에 공백이 있을 경우).
+
+인덱스를 통한 반복 (index loop)
+arr=(a b c d)
+for i in "${!arr[@]}"; do
+  echo "index: $i, value: ${arr[$i]}"
+done
+${!arr[@]}는 배열의 인덱스 리스트를 의미합니다.
+이를 통해 각 요소의 인덱스와 값을 모두 활용할 수 있어요.
+
+| 표현           | 의미        |
+| ------------ | --------- |
+| `${arr[@]}`  | 배열의 모든 요소 |
+| `${arr[0]}`  | 첫 번째 요소   |
+| `${#arr[@]}` | 배열의 크기    |
+| `${!arr[@]}` | 배열의 인덱스들  |
+
+
+#!/bin/bash
+
+fruits=("apple" "banana" "cherry")
+
+echo "== 배열 요소 순회 =="
+for fruit in "${fruits[@]}"; do
+  echo "과일: $fruit"
+done
+
+echo "== 인덱스 순회 =="
+for i in "${!fruits[@]}"; do
+  echo "$i 번째: ${fruits[$i]}"
+done
+
+
+
+명령어 상태 체크 ($?)
+ls somefile.txt
+if [ $? -ne 0 ]; then
+  echo "파일 없음"
+fi
+
+$?는 직전 명령어의 종료 상태 코드
+0: 성공, 0이 아니면 실패
+
+
+입출력 리디렉션
+| 문법   | 설명                 |
+| ---- | ------------------ |
+| `>`  | 파일에 출력 (덮어씀)       |
+| `>>` | 파일에 출력 (이어붙임)      |
+| `<`  | 입력 파일에서 읽기         |
+| `2>` | 에러 출력 리디렉션         |
+| `&>` | 표준 출력 + 에러 함께 리디렉션 |
+
+echo "로그입니다" > log.txt
+ls nonexistent 2> error.txt
+
+
+파이프 (|) 와 커맨드 체이닝
+ps aux | grep nginx
+| 파이프: 앞 명령어의 출력을 다음 명령어로 넘김
+&& : 앞 명령 성공 시 다음 실행
+|| : 앞 명령 실패 시 다음 실행
+
+mkdir test && cd test
+
+
+trap – 신호 처리
+trap "echo 종료됨" SIGINT
+
+while true; do
+  sleep 1
+done
+Ctrl+C 등 특정 시그널을 가로채어 처리 가능
+
+
+스크립트에 인자 전달
+#!/bin/bash
+echo "첫 번째 인자: $1"
+echo "두 번째 인자: $2"
+echo "인자 개수: $#"
+echo "모든 인자: $@"
+$1, $2, ... : 위치 인자
+$@ : 모든 인자
+$# : 인자 개수
