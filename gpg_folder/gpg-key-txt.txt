@@ -1,0 +1,93 @@
+
+# 리눅스 
+
+설명: gnupg 설치
+
+[Debian/Ubuntu]
+sudo apt update
+sudo apt install gnupg
+
+[RHEL/CentOS/Fedora]
+sudo dnf install gnupg
+
+설명: 키 생성
+gpg --full-generate-key
+
+
+1. 키 종류 선택:
+
+2. 키 크기 선택:
+키 크기를 선택
+
+3. 유효 기간 설정:
+키의 유효 기간을 설정
+
+4. 사용자 정보 입력:
+이름 (Name)
+
+이메일 (Email)
+
+선택적으로 댓글 (Comment)
+
+5. 패스프레이즈 설정:
+키를 사용할 때마다 입력해야 할 비밀번호를 설정
+
+설명: 공개키 리스트 확인
+gpg --list-keys
+
+설명: 공개키 내보내기 
+gpg --armor --export <your-email@example.com/key-id> > public_key.asc
+
+--armor : ASCII Armor 형식출력 (없으면 바이너리로 출력)
+
+설명: 공개키 삭제
+gpg --delete-key <your-email@example.com/key-id>
+
+설명: 비밀키 리스트 확인
+gpg --list-secret-keys
+
+설명: 비밀키 내보내기
+gpg --armor --export-secret-keys <your-email@example.com/key-id> --output /home/user/keys/public_key.asc
+
+설명: 비밀키 삭제
+gpg --delete-secret-keys <your-email@example.com/key_id>
+
+설명: 키 지문 확인
+gpg --fingerprint <your-email@example.com/key_id>
+gpg --with-fingerprint <public_key/private_key>.asc
+
+
+설명: 공개키로 암호화
+echo "이것은 메시지입니다" | gpg --armor --encrypt --recipient <your-email@example.com/key_id> > encrypted_message.asc
+gpg --armor --encrypt --recipient <your-email@example.com> message.txt
+
+
+설명: 비밀키로 서명
+echo "이것은 메시지입니다" | gpg --armor --sign > signed_message.asc
+gpg --armor --sign message.txt
+gpg --default-key <키 ID 또는 이메일> --sign message.txt
+
+
+설명: 비밀키로 복호화 
+echo "이것은 메시지입니다" | gpg --decrypt encrypted_message.asc
+gpg --decrypt message.txt.asc
+gpg --secret-keyring <키파일> --decrypt message.txt.asc
+
+
+설명: 공개키로 서명 검증
+echo "이것은 메시지입니다" | gpg --verify signed_message.asc
+gpg --verify message.txt.asc
+
+
+설명: 서명 후 암호화
+echo "이것은 메시지입니다" | gpg --armor --sign --encrypt --recipient <your-email@example.com/key_id> > signed_and_encrypted_message.asc
+
+gpg --armor --sign --encrypt --recipient <your-email@example.com/key_id> message.txt
+
+
+설명: 키 import
+gpg --import <public_key/private_key>.asc
+
+
+# 윈도우
+gpg4win 설치
