@@ -55,3 +55,6 @@ sudo firewall-cmd --reload
 
 설명: 로그 확인
 sudo tail -f /var/log/auth.log
+
+
+
