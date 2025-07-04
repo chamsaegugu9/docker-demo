@@ -1,0 +1,147 @@
+# 서비스 시작
+systemctl start <service_name> 
+
+# 서비스 중지
+systemctl stop <service_name> 
+
+# 서비스 재시작
+systemctl restart <service_name> 
+
+# 서비스 현재 상태 확인
+systemctl status <service_name> 
+
+# 서비스 부팅 시 자동 실행 등록
+systemctl enable <service_name> 
+
+# 서비스 부팅 시 자동 실행 해제
+systemctl disable <service_name> 
+
+# 서비스 자동 실행 설정 여부 확인
+systemctl is-enabled <service_name> 
+
+# 서비스 현재 실행 중인지 확인
+systemctl is-active <service_name> 
+
+# 서비스 설정만 다시 불러오기 (재시작 없이)
+systemctl reload <service_name> 
+
+# systemd 자체 재실행
+systemctl daemon-reexec 
+
+# .service 파일 등 설정 변경 사항 반영
+systemctl daemon-reload 
+
+# 실패한 서비스 상태 초기화
+systemctl reset-failed 
+
+# 서비스 완전히 비활성화 (시작도 못하게 차단)
+systemctl mask <service_name> 
+
+# 서비스 마스킹 해제 (다시 실행 가능하게 만듦)
+systemctl unmask <service_name> 
+
+# 해당 서비스 프로세스를 강제 종료 (signal 전송)
+systemctl kill <service_name> 
+
+# 현재 실행 중인 서비스 목록
+systemctl list-units --type=service 
+
+# 설치된 모든 서비스와 상태 (활성화 여부)
+systemctl list-unit-files --type=service 
+
+# 해당 서비스의 로그 보기
+journalctl -u <service_name> 
+
+# 실시간 로그 보기 (tail -f 처럼)
+journalctl -u <service_name) -f 
+
+# 오늘 이후 전체 로그 보기
+journalctl --since today
+
+# 지난 1시간 동안의 로그
+journalctl --since "1 hour ago"
+
+# 서비스 등록 방법
+
+<service_name>.service 파일 작성
+
+.service 파일 예시
+
+#############################
+
+[Unit]
+Description=설명
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/실행/경로/프로그램
+Restart=on-failure
+User=사용자이름
+WorkingDirectory=/작업/디렉토리
+
+[Install]
+WantedBy=multi-user.target
+
+#############################
+
+[Unit]
+
+Description : 서비스 설명 (로그 등에 표시됨)
+
+After : 어떤 서비스 이후에 실행될지 지정 (예: network.target)
+
+Requires : 해당 서비스가 필요로 하는 다른 서비스 지정
+
+
+[Service]
+
+Type=simple : 기본 실행 타입. ExecStart 에서 실행된 프로세스를 메인으로 간주
+
+	simple : 기본값. ExecStart 의 프로세스를 메인으로 간주
+
+	forking : 백그라운드로 포크하는 데몬용 (nohub, & 등 사용 시)
+
+	oneshot : 짧게 실행되고 끝나는 작업용 (예: 초기화 스크립트)
+
+	notify : 데몬이 systemd 에 준비 완료를 알릴 수 있음
+
+	idle : 다른 작업 끝난 뒤 실행됨 (잘 안 씀)
+
+
+ExecStart : 서비스가 실행할 명령어 (필수)
+
+ExecStop : 서비스 종료 시 실행할 명령어 (선택)
+
+Restart : 실패 시 재시작 정책 (on-filure, always, no)
+
+User : 어떤 사용자 권한으로 실행할지
+
+WorkingDirectory : 실행 경로 지정
+
+Environment : 환경 변수 설정 (예: Environment="ENV=prod")
+
+EnvironmentFile : 환경 변수 파일 설정 (예: EnvironmentFile=/etc/myapp/.env)
+
+StandardOutput, StandardError : 로그 리디렉션 (jouranlctl 외 파일 저장도 가능)
+
+
+[Install]
+WantedBy=multi-user.target : 이걸 설정해야 systemctl enable 시 부팅 자동실행 됨
+
+
+# 서비스 등록 및 실행 절차 
+
+# 서비스 파일 저장
+sudo vi /etc/systemd/system/<service_name>.service
+
+# systemd 데몬에 등록
+sudo systemctl daemon-reload
+
+# 서비스 실행 및 자동 실행 설정
+sudo systemctl start <service_name>
+sudo systemctl enable <service_name>
+
+# 서비스 상태 확인
+systemctl status <service_name>
+

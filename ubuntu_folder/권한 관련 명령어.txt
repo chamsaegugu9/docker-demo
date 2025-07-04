@@ -1,0 +1,47 @@
+# 
+ls -l : 권한/소유자/그룹 확인 (예: ls -l <file_name>) 
+
+chmod : 파일/디렉토리 권한 변경 (예: chmod 755 script.sh)
+
+chown : 파일/디렉토리 소유자 변경 (예: chown <user_name> <file_name>
+
+chgrp : 파일의 그룹 변경 (예: chgrp <group_name> <file_name>
+
+
+# 권한
+
+# 숫자
+7 : 읽기 + 쓰기 + 실행 (rwx)
+
+6 : 읽기 + 쓰기 (rw-)
+
+5 : 일기 + 실행 (r-w)
+
+4 : 읽기 (r--) 
+
+0 : 아무 권한 없음 (---)
+
+사용자/그룹/기타
+
+# 문자
+chmod u+x file.sh     # 사용자에게 실행 권한 추가
+chmod g-w file.sh     # 그룹에서 쓰기 권한 제거
+chmod o+r file.sh     # 기타 사용자에 읽기 권한 부여
+
+# 소유자 및 그룹 변경
+chown user file.txt          # 소유자만 변경
+chown user:group file.txt    # 소유자와 그룹 동시에 변경
+chown :group file.txt        # 그룹만 변경
+
+# 그룹만 따로 변경
+chgrp wheel script.sh
+
+
+# 특수 권한
+
+SUID (Set UID) : 실행 시 해당 파일의 소유자 권한으로 실행	(예: chmod u+s binary)
+SGID (Set GID) : 디렉토리 내 생성 파일이 부모 그룹을 따라감 (예: chmod g+s dir/)
+Sticky Bit : 디렉토리 내 파일을 소유자만 삭제 가능하게 함 (주로 /tmp)	(예: chmod +t dir/)
+
+
+
