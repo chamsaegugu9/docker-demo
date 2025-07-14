@@ -1,0 +1,35 @@
+FROM ubuntu:22.04
+
+RUN apt-get update && \
+    apt-get install -y openssh-server && \
+    mkdir /var/run/sshd
+
+RUN useradd -m sftpuser && \
+    mkdir -p /home/sftpuser/upload && \
+    mkdir -p /home/sftpuser/backup && \
+    mkdir -p /home/sftpuser/.ssh && \
+    chown root:root /home/sftpuser && \
+    chmod 755 /home/sftpuser && \
+    chown sftpuser:sftpuser /home/sftpuser/upload && \
+    chown sftpuser:sftpuser /home/sftpuser/backup && \
+
+COPY id_rsa.pub /home/sftpuser/.ssh/authorized_keys
+RUN chown -R sftpuser:sftpuser /home/sftpuser/.ssh && \
+    chmod 700 /home/sftpuser/.ssh && \
+    chmod 600 /home/sftpuser/.ssh/authorized_keys
+
+# SSH 설정 수정 (주의: Match 블록 안에 들여쓴 설정만 넣기)
+RUN sed -i 's/#Subsystem sftp .*/Subsystem sftp internal-sftp/' /etc/ssh/sshd_config && \
+    echo "HostkeyAlgorithms +ssh-rsa" >> /etc/ssh/sshd_config && \
+    echo "PubkeyAcceptedAlgorithms +ssh-rsa" >> /etc/ssh/sshd_config && \
+    echo "Match User sftpuser" >> /etc/ssh/sshd_config && \
+    echo "    ChrootDirectory /home/sftpuser" >> /etc/ssh/sshd_config && \
+    echo "    ForceCommand internal-sftp" >> /etc/ssh/sshd_config && \
+    echo "    AllowTcpForwarding no" >> /etc/ssh/sshd_config && \
+    echo "    X11Forwarding no" >> /etc/ssh/sshd_config && \
+    echo "    PasswordAuthentication no" >> /etc/ssh/sshd_config && \
+    echo "    PubkeyAuthentication yes" >> /etc/ssh/sshd_config
+    
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]

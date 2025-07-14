@@ -1,0 +1,28 @@
+FROM ubuntu:22.04
+
+RUN apt-get update && \
+    apt-get install -y openssh-server && \
+    mkdir /var/run/sshd
+
+# 사용자 추가 (nologin으로 로그인 차단)
+RUN useradd -m -s /usr/sbin/nologin sftpuser
+
+# SFTP 전용 디렉토리
+RUN mkdir -p /home/sftpuser/upload && \
+    chown root:root /home/sftpuser && \
+    chmod 755 /home/sftpuser && \
+    chown sftpuser:sftpuser /home/sftpuser/upload
+
+COPY sftp_config/sshd_config /etc/ssh/sshd_config
+
+# SSH 키 인증 설정
+RUN mkdir -p /home/sftpuser/.ssh && \
+    chmod 700 /home/sftpuser/.ssh
+
+COPY authorized_keys/id_rsa.pub /home/sftpuser/.ssh/authorized_keys
+
+RUN chown -R sftpuser:sftpuser /home/sftpuser/.ssh && \
+    chmod 600 /home/sftpuser/.ssh/authorized_keys
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
