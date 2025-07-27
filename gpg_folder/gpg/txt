@@ -1,0 +1,51 @@
+docker build -t my-ubuntu .
+
+docker run -it my-ubuntu
+
+docker exec -it <container_id> /bin/bash
+
+
+gpg --full-generate-key
+
+your selection? 1
+
+What keysize do you want? () 2048
+
+Key is valid for? (0) 2y
+
+Is this correct? (y/N) y
+
+Real name: kslife
+
+Email address: ksjcloud@biznbank.com
+Comment: kslife
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? o
+
+root@92dc4d70521b:~/.gnupg# gpg --list-keys
+root@92dc4d70521b:~/.gnupg# gpg --list-secret-keys
+
+
+gpg --output <output_name> --armor --export <keyID>
+gpg --output <output_name> --armor --export-secret-key <keyID>
+
+gpg --output public.pgp --armor --export E98C91AA0B86C80934F15978EC967534BCB00AE8
+gpg --output private.pgp --armor --export-secret-key E98C91AA0B86C80934F15978EC967534BCB00AE8
+
+gpg --edit-key <keyID>
+gpg --edit-key E98C91AA0B86C80934F15978EC967534BCB00AE8
+
+gpg> expire
+
+gpg --delete-key <keyID>
+gpg --delete-secret-key <keyID>
+
+gpg --delete-key E98C91AA0B86C80934F15978EC967534BCB00AE8
+gpg --delete-secret-key E98C91AA0B86C80934F15978EC967534BCB00AE8
+
+
+docker cp <container_id>:<containerDir> <localDir>
+
+docker cp <container_id>:/root/.gnupg ~/local-backup/
+
+docker cp db5170dd03af20f2ddada5777a02eaa79bfbf4d8a5861d3abbf6662fcc3eb8c4:/root/.ssh C:/ 

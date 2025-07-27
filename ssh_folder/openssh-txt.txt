@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # [리눅스]
 
 # Debian/Ubuntu
@@ -111,3 +112,65 @@ net user
 
 설명: 권한 설정
 authorized_keys 에 관한 소유자는 sftpuser(sftp 로 접근하는 유저), system 만 가능
+=======
+# [리눅스]
+
+# Debian/Ubuntu
+sudo apt update
+sudo apt install openssh-server
+
+# CentOS/RHEL
+sudo yum install openssh-server
+
+
+설명: ssh 상태 확인
+sudo systemctl status ssh
+
+설명: ssh 실행
+sudo systemctl start ssh
+
+설명: sftp 유저 생성
+sudo adduser sftpuser
+
+설명: sftp 유저의 디렉토리 생성 
+sudo mkdir /home/sftpuser/uploads
+
+설명: 디렉토리 권한 설정 (권한 제한)
+sudo chown root:root /home/sftpuser
+sudo chmod 755 /home/sftpuser
+sudo chown sftpuser:sftpuser /home/sftpuser/uploads
+
+설명: sshd_config 파일 수정
+sudo nano /etc/ssh/sshd_config
+
+설명: 유저 정보 삽입 (파일 제일 아래에 삽입)
+Match User sftpuser
+    ChrootDirectory /home/sftpuser
+    ForceCommand internal-sftp
+    AllowTcpForwarding no
+    PasswordAuthentication yes  # 비밀번호 인증을 사용하려면 yes로 설정
+
+ChrootDirectory: 이 디렉터리로 사용자를 제한
+
+ForceCommand internal-sftp: 사용자가 접속할 때 SFTP만 사용하도록 강제
+
+AllowTcpForwarding no: TCP 포워딩을 비활성화
+
+PasswordAuthentication yes: 비밀번호 인증을 사용하려면 yes로 설정
+
+설명: ssh 재시작
+sudo systemctl restart ssh
+
+설명: 방화벽 설정 (ufw 방화벽, 22 포트 허용)
+sudo ufw allow 22
+
+(Firewalld 방화벽 22 포트 허용)
+sudo firewall-cmd --permanent --add-port=22/tcp
+sudo firewall-cmd --reload
+
+설명: 로그 확인
+sudo tail -f /var/log/auth.log
+
+
+
+>>>>>>> b7174a653a003b66ac14d279543b68dfcab6c6db

@@ -1,0 +1,5 @@
+# github 의 레포지토리 zip 으로 다운 받기
+
+curl -L -o repo.zip https://github.com/사용자이름/레포이름/archive/refs/heads/main.zip
+
+curl -L -o repo.zip https://github.com/BNBrkdehd/test/archive/refs/heads/main.zip

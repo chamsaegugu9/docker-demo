@@ -1,0 +1,24 @@
+ssh-keygen -t rsa -b 4096 -C "sftp key"
+
+docker-compose up --build -d
+
+sftp -i ~/.ssh/id_rsa -P 2222 sftpuser@localhost
+
+# sftp -i C:\Users\rkdehd\.ssh\id_rsa -P 2222 sftpuser@localhost
+
+# sftp -i ./id_rsa -P 2222 sftpuser@localhost
+
+
+docker exec -it sftp-openssh /bin/bash
+docker exec -it sftp-openssh /bin/sh
+docker exec -u root -it sftp-openssh /bin/bash
+
+
+apt update
+apt install vim -y
+apt install net-tools -y
+
+netstat -tlnp | grep :22
+
+
+ps aux | grep sshd

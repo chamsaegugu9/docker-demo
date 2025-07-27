@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  sftp:
+    build: .
+    container_name: sftp-openssh
+    ports:
+      - "2222:22"
+    volumes:
+      - ./data:/home/sftpuser/upload
