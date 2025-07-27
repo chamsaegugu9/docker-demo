@@ -47,7 +47,7 @@ Get-WindowsCapability -Online | Where-Object {$_.Name -like 'OpenSSH*'}
 Add-WindowsCapability -Online -Name OpenSSH.Client
 
 설명: 키 생성
-ssh-keygen -t rsa -b 4096 -m PEM -f C:\sftp_key
+ssh-keygen -t rsa -b 4096 -m PEM -f C:\SFTP\key\
 
 설명: 키 변환
 

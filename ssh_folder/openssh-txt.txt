@@ -58,3 +58,56 @@ sudo tail -f /var/log/auth.log
 
 
 
+[윈도우]
+
+설명: sftp 유저 생성
+
+ - 파워쉘
+New-LocalUser "sftpuser" -Password (ConvertTo-SecureString "P@ssw0rd!" -AsPlainText -Force)
+
+New-LocalUser -Name "sftpuser" -Password (ConvertTo-SecureString "P@ssw0rd!" -AsPlainText -Force) `
+    -FullName "SFTP User" -Description "SFTP 전용 사용자" -UserMayNotChangePassword $true -PasswordNeverExpires $true
+
+New-LocalUser -Name "sftpuser" -Password (ConvertTo-SecureString "sftpuser" -AsPlainText -Force) -FullName "SFTP User" -Description "SFTP 전용 사용자"
+
+
+-Name: 사용자 이름
+
+-Password: 사용자 비밀번호 (plain text로 입력 후 ConvertTo-SecureString으로 암호화)
+
+-FullName: 사용자의 풀네임
+
+-Description: 사용자 설명
+
+-UserMayNotChangePassword $true: 사용자가 비밀번호를 변경할 수 없도록 설정
+
+-PasswordNeverExpires $true: 비밀번호가 만료되지 않도록 설정
+
+ - cmd 
+net user sftpuser P@ssw0rd! /add
+
+net user [사용자 이름] [비밀번호] [/add] [/comment:"설명"] [/fullname:"풀네임"] [/expires:날짜] [/passwordchg:{yes|no}] [/passwordreq:{yes|no}]
+
+/add: 새 사용자 계정을 추가합니다. (필수)
+
+/comment:"설명": 사용자의 설명을 추가할 수 있습니다. 예: /comment:"SFTP 전용 사용자"
+
+/fullname:"풀네임": 사용자의 풀네임을 지정할 수 있습니다.
+
+/expires:날짜: 사용자가 로그인할 수 있는 만료 날짜를 설정할 수 있습니다. 예: /expires:2025-12-31
+
+/passwordchg:{yes|no}: 사용자가 비밀번호를 변경할 수 있는지 여부를 설정합니다. no로 설정하면 사용자는 비밀번호를 변경할 수 없습니다.
+
+/passwordreq:{yes|no}: 비밀번호가 반드시 필요하도록 설정합니다. yes로 설정하면 비밀번호가 반드시 필요합니다.
+
+
+설명: 유저 확인
+ - 파워쉘
+Get-LocalUser
+
+ - cmd 
+net user
+
+
+설명: 권한 설정
+authorized_keys 에 관한 소유자는 sftpuser(sftp 로 접근하는 유저), system 만 가능
