@@ -1,0 +1,20 @@
+
+설명: 일시적 환경 변수 설정 (현제 셸에서만 유효)
+export <var>=<val>
+
+: 를 사용해 구분
+export PATH="$PATH:/opt/myapp/bin"
+export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+
+설명: 영구적 환경 변수 설정 (로그인할 때마다 적용)
+~/.bashrc, ~/.bash_profile, ~/.zshrc 등 에 직접 추가
+
+export <var>=<val>
+
+설명: 변경사항 적용
+source ~/.bashrc
+
+설명: 시스템 전체 적용 
+/etc/environment, /etc/profile, /etc/profile.d/*.sh 등에 직접 추가
+
+재부팅 또는 재로그인 필요

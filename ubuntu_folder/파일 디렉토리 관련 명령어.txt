@@ -68,3 +68,13 @@ zip <file_name.zip> <file_name/directory_name>
 설명: zip 압축 해제
 unzip <file_name.zip>
 
+# 링크
+하드 링크: 원본 파일과 같은 inode를 공유. 원본 삭제해도 링크는 살아있음 (디렉로티에는 하드 링크를 만들 수 없음. 보안상 제한)
+심볼록 링크: 일종의 "바로가기 파일". 원본 경로를 가리킴. 원본 삭제되면 링크는 깨짐
+
+설명: 하드 링크 생성
+ln <source> <hard_link_name>
+
+설명: 심볼릭 링크 생성
+ln -s <source> <symbolic_link_name>
+
