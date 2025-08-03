@@ -1,0 +1,17 @@
+# Ubuntu/Debian
+sudo apt update
+
+sudo apt install <package_name>
+
+# CentOS/RHEL
+sudo yum update
+
+sudo yum <package_name>
+
+# archlinux
+sudo pacman -Syu
+-S: 설치
+
+-y: 패키지 데이터베이스 동기화
+
+-u: 업그레이드 가능한 모든 패키지 업그레이드

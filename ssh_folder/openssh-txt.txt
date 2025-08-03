@@ -111,3 +111,30 @@ net user
 
 설명: 권한 설정
 authorized_keys 에 관한 소유자는 sftpuser(sftp 로 접근하는 유저), system 만 가능
+
+
+# scp 명령어
+
+scp <option> <source> <destination>
+
+# 로컬 -> 원격 서버
+scp <local_file_name> <user>@<ip>:<directory_name>
+
+# 원격 서버 -> 로컬
+scp <user>@<ip>:<directory_name>/<file_name> <local_directory_name>
+
+-r: 디렉토리 전체를 복사
+scp -r <local_directory_name> <user>@<ip>:<directory_name>
+
+-P: 포트 지정
+scp -P 2022 <local_file_name> <user>@<ip>:<directory_name>
+
+-i: ssh 키 사용
+
+-C: 전송 중 압축
+
+-v: 디버깅용 출력
+
+# 원격 -> 원격
+scp <user1>@<ip1>:<directory_name1>/<file_name1> <user2>@<ip2><directory_name2>
+

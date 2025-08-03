@@ -1,0 +1,70 @@
+설명: 현재 디렉토리의 파일 및 폴더 목록 출력
+ls
+
+설명: 디렉토리 이동
+cd <directory_name>
+cd .. (홈 디렉토리)
+cd ~ (상위 디렉토리)
+
+설명: 현재 위치한 디렉토리 경로 출력
+pwd
+
+설명: 새 디렉토리 생성
+mkdir <directory_name>
+
+설명: 빈 디렉토리 삭제
+rmdir <directory_name>
+
+설명: 디렉토리 구조를 트리 형식으로 출력(설치 필요: sudo apt install tree)
+tree
+
+설명: 빈 파일 생성 또는 파일의 수정 시간 변경
+touch <file_name>
+
+설명: 파일 복사
+cp <src> <target>
+-r: 디렉토리 복사
+
+설명: 파일 또는 디렉토리 이동 또는 이름 변경
+mv <src> <target>
+
+설명: 파일 삭제
+rm <src>
+-r: 디렉토리 삭제
+
+설명: 파일의 상세한 정보 출력
+stat <src>
+
+설명: 파일의 타입 확인
+file <src>
+
+설명: 특정 이름 또는 패턴의 파일 찾기
+find <directory_name> -name <pattern>
+
+설명: 시스템 전체에서 파일 검색 (사전 색인 필요)
+locate <file_name> 
+
+설명: 명령어의 실행 파일 경로 확인
+which <cmd>
+
+설명: 파일에서 특정 문자열 패턴 검색
+grep <pattern> <file_name>
+
+설명: 디렉토리를 tar 로 묶기
+tar -cvf <file_name.tar> <directory_name>
+
+설명: tar 압축 풀기
+tar -xvf <file_name.tar>
+
+설명: gzip 압축
+gzip <file_name>
+
+설명: gzip 압축 해제
+gunzip <file_name.gz>
+
+설명: zip 압축
+zip <file_name.zip> <file_name/directory_name>
+
+설명: zip 압축 해제
+unzip <file_name.zip>
+
